@@ -15,7 +15,7 @@ orbs:
 jobs:
   build:
     docker:
-      - image: cimg/base:current
+      - image: cimg/openjdk:25.0
     steps:
       - cache/with_build_tool_cache:
           tool: gradle

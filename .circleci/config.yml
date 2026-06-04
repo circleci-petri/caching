@@ -1,0 +1,32 @@
+version: 2.1
+
+orbs:
+  cache: https://raw.githubusercontent.com/circleci-petri/caching/refs/heads/main/orbs/build-tool-cache.yml
+
+jobs:
+  gradle:
+    docker:
+      - image: cimg/openjdk:25.0
+    environment:
+      GRADLE_OPTS: -Dorg.gradle.welcome=never
+    steps:
+      - run:
+          name: Clone WorldEdit
+          command: |
+            git clone --depth=1 --branch version/7.4.x https://github.com/EngineHub/WorldEdit ~/worldedit
+      - cache/with_build_tool_cache:
+          tool: gradle
+          steps:
+            - run:
+                name: Build
+                working_directory: ~/worldedit
+                command: ./gradlew --no-daemon --build-cache compileJava
+
+workflows:
+  demo:
+    jobs:
+      - gradle
+      - gradle:
+          name: gradle-rerun
+          requires:
+            - gradle
