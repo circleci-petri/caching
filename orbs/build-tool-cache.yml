@@ -1,0 +1,26 @@
+version: 2.1
+
+commands:
+  with_build_tool_cache:
+    description: Runs the given steps with remote caching configured for the given build tool.
+    parameters:
+      tool:
+        type: enum
+        enum: ["gradle", "bazel"]
+        description: "The build tool to configure remote caching for."
+      steps:
+        type: steps
+        description: "The steps to run within the build tool cache."
+    steps:
+      - run:
+          name: Start cache server
+          command: circleci run cache server start
+          background: true
+      - run:
+          name: Configure << parameters.tool >>
+          command: circleci run cache configure << parameters.tool >>
+      - steps: << parameters.steps >>
+      - run:
+          name: Stop cache server
+          command: circleci run cache server stop
+          when: always
