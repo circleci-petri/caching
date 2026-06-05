@@ -23,6 +23,10 @@ jobs:
                 name: Build
                 working_directory: ~/worldedit
                 command: ./gradlew --no-daemon --build-cache compileJava
+      - run:
+          name: Check /tmp
+          command: ls -ahl /tmp
+          when: always
 
 workflows:
   demo:
