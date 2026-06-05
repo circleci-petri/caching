@@ -19,7 +19,7 @@ commands:
       - run:
           name: Configure << parameters.tool >>
           command: |
-            sleep 1
+            sleep  1
             circleci run cache configure << parameters.tool >>
       - steps: << parameters.steps >>
       - run:
