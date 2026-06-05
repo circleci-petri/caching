@@ -14,6 +14,8 @@ jobs:
           name: Clone WorldEdit
           command: |
             git clone --depth=1 --branch version/7.4.x https://github.com/EngineHub/WorldEdit ~/worldedit
+      - run: whoami
+      - run: ls -ahl /tmp
       - cache/with_build_tool_cache:
           tool: gradle
           steps:
