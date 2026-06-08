@@ -7,8 +7,8 @@ jobs:
   gradle:
     docker:
       - image: cimg/openjdk:25.0
-    environment:
-      GRADLE_OPTS: -Dorg.gradle.welcome=never
+    # environment:
+    #   GRADLE_OPTS: -Dorg.gradle.welcome=never
     steps:
       - run:
           name: Clone WorldEdit
