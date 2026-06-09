@@ -16,7 +16,6 @@ commands:
         default: ""
         description: "The cache prefix to use for the cache server."
     steps:
-      - run: echo << parameters.cache-prefix >>
       - run:
           name: Start cache server
           command: circleci run cache server start --cache-prefix "<< parameters.tool >>/<< parameters.cache-prefix >>"
