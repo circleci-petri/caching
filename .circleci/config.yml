@@ -19,7 +19,7 @@ jobs:
           command: git clone --depth=1 --branch version/7.4.x https://github.com/EngineHub/WorldEdit ~/worldedit
       - cache/with_build_tool_cache:
           tool: gradle
-          cache-prefix: "gradle/$CIRCLE_WORKFLOW_ID"
+          cache-prefix: "$CIRCLE_WORKFLOW_ID"
           steps:
             - run:
                 name: Build
@@ -43,7 +43,7 @@ jobs:
           command: git clone --depth=1 --branch "master" https://github.com/abseil/abseil-cpp ~/abseil-cpp
       - cache/with_build_tool_cache:
           tool: bazel
-          cache-prefix: "bazel/$CIRCLE_WORKFLOW_ID"
+          cache-prefix: "$CIRCLE_WORKFLOW_ID"
           steps:
             - run:
                 name: Build
