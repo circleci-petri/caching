@@ -1,5 +1,11 @@
 version: 2.1
 
+parameters:
+  build_tool:
+    type: enum
+    enum: [all, gradle, bazel]
+    default: all
+
 orbs:
   cache: https://raw.githubusercontent.com/circleci-petri/caching/refs/heads/main/orbs/build-tool-cache.yml
 
@@ -44,13 +50,24 @@ jobs:
 
 
 workflows:
-  demo:
+  gradle-demo:
+    when:
+      or:
+        - equal: [all, << pipeline.parameters.build_tool >>]
+        - equal: [gradle, << pipeline.parameters.build_tool >>]
     jobs:
       - gradle
       - gradle:
           name: gradle-rerun
           requires:
             - gradle
+
+  bazel-demo:
+    when:
+      or:
+        - equal: [all, << pipeline.parameters.build_tool >>]
+        - equal: [bazel, << pipeline.parameters.build_tool >>]
+    jobs:
       - bazel
       - bazel:
           name: bazel-rerun
