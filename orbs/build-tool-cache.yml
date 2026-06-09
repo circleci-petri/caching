@@ -14,7 +14,7 @@ commands:
     steps:
       - run:
           name: Start cache server
-          command: circleci run cache server start --cache-prefix "gradle/$CIRCLE_WORKFLOW_ID"
+          command: circleci run cache server start --cache-prefix "<< parameters.tool >>/$CIRCLE_WORKFLOW_ID"
           background: true
       - run:
           name: Configure << parameters.tool >>

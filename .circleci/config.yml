@@ -7,15 +7,10 @@ jobs:
   gradle:
     docker:
       - image: cimg/openjdk:25.0
-    # environment:
-    #   GRADLE_OPTS: -Dorg.gradle.welcome=never
     steps:
       - run:
           name: Clone WorldEdit
-          command: |
-            git clone --depth=1 --branch version/7.4.x https://github.com/EngineHub/WorldEdit ~/worldedit
-      - run: whoami
-      - run: ls -ahl /tmp
+          command: git clone --depth=1 --branch version/7.4.x https://github.com/EngineHub/WorldEdit ~/worldedit
       - cache/with_build_tool_cache:
           tool: gradle
           steps:
@@ -23,10 +18,30 @@ jobs:
                 name: Build
                 working_directory: ~/worldedit
                 command: ./gradlew --no-daemon --build-cache compileJava
+
+  bazel:
+    docker:
+      - image: cimg/openjdk:25.0
+    steps:
       - run:
-          name: Check /tmp
-          command: ls -ahl /tmp
-          when: always
+          name: Install Bazel
+          command: |
+            curl -L --fail \
+              -o /tmp/bazelisk \
+              https://github.com/bazelbuild/bazelisk/releases/download/v1.20.0/bazelisk-linux-amd64
+            sudo install -m 0755 /tmp/bazelisk /usr/local/bin/bazel
+            bazel version || true
+      - run:
+          name: Clone abseil-cpp
+          command: git clone --depth=1 --branch "master" https://github.com/abseil/abseil-cpp ~/abseil-cpp
+      - cache/with_build_tool_cache:
+          tool: bazel
+          steps:
+            - run:
+                name: Build
+                working_directory: ~/abseil-cpp
+                command: bazel build //absl/...
+
 
 workflows:
   demo:
